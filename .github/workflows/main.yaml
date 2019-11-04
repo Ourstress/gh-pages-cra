@@ -1,0 +1,22 @@
+name: Deploy react app to github pages on push
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@gh-pages
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "10.x"
+
+      - name: Setup GIT
+        run: |
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git config user.name "$GITHUB_ACTOR"
+
+      - name: npm install, test and deploy on gh pages
+        run: |
+          npm install
+          CI=true npm test
+          npm run deploy
