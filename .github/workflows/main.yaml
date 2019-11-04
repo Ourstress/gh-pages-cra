@@ -10,13 +10,10 @@ jobs:
         with:
           node-version: "10.x"
 
-      - name: Setup GIT
+      - name: Setup GIT, npm install, test and deploy on gh pages
         run: |
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git config user.name "$GITHUB_ACTOR"
-
-      - name: npm install, test and deploy on gh pages
-        run: |
+          git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git config --global user.name "$GITHUB_ACTOR"
           npm install
           CI=true npm test
           npm run deploy
