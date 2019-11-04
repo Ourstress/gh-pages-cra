@@ -1,0 +1,30 @@
+# Notes:
+#  unsuccessful attempts to deploy to gh-pages using github actions
+#  Error received: fatal: could not read Username for 'https://github.com': No such device or address
+#  good reference at https://github.community/t5/GitHub-Actions/Best-way-to-automate-versioning-publishing-to-GitHub-Package/td-p/31211
+
+# To host the site on github pages irrespective of whether github actions work
+# consider running the command - NPM run deploy - from your local machine IDE
+# Just follow the instructions here https://create-react-app.dev/docs/deployment/#github-pages-https-pagesgithubcom
+
+name: Deploy react app to github pages on push
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "10.x"
+
+      - name: Setup GIT, npm install, test and deploy on gh pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm install
+          CI=true npm test
+          git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git config --global user.name "$GITHUB_ACTOR"          
+          npm run deploy
